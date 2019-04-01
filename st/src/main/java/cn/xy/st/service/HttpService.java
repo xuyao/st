@@ -15,6 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class HttpService extends LogService{
 	
+	//默认utf-8
+	public String get(String urlAll) {
+		return get(urlAll, "utf-8");
+	}
+	
 	public String get(String urlAll, String charsetName) {
 		BufferedReader reader = null;
 		String result = null;

@@ -1,25 +1,40 @@
 package cn.xy.st;
 
+import java.util.Scanner;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import cn.xy.st.service.AllStocksService;
+import cn.xy.st.service.DayKlineService;
 import cn.xy.st.service.DividendService;
 
 public class App {
     public static void main( String[] args ) {
 		System.out.println("#########start!!!");
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContent.xml");
+		Scanner scanner = new Scanner(System.in);
+		String in = scanner.nextLine();
+
+		switch(in){
+	    case "1" ://all stock list --1
+			AllStocksService allStocksService = (AllStocksService)context.getBean("allStocksService");
+			allStocksService.run();
+	       break;
+	    case "2" ://caculate stock bonus --2
+			DividendService dividendService = (DividendService)context.getBean("dividendService");
+			dividendService.run();
+			dividendService.caculatePriceDiv();
+	       break;
+	    case "3" ://day kline statistic --3
+	    	DayKlineService dayKlineService = (DayKlineService)context.getBean("dayKlineService");
+	    	dayKlineService.run();
+	       break;
+	    default : //可选
+	    	System.out.println("Noting!!!");
+		}
 		
-		//all stock list
-		AllStocksService allStocksService = (AllStocksService)context.getBean("allStocksService");
-		allStocksService.run();
-		
-		//caculate stock bonus
-//		DividendService dividendService = (DividendService)context.getBean("dividendService");
-//		dividendService.run();
-//		dividendService.caculatePriceDiv();
-		
+		scanner.close();
 		System.out.println("#########end!!!");
     }
     

@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
+ * 	从东方财富拿到股票分红数据，分红次数和分红额度，进行统计
  * @author xuyao
  *	caculate stock bonus sort and save
  */

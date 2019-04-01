@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import cn.xy.st.util.ConstsUtil;
 
 /**
+ * 	得到所有的股票名称和编号
  * @author xuyao
  *	all stock list service
  */

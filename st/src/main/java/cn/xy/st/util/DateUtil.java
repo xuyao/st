@@ -305,5 +305,6 @@ public class DateUtil {
 	public static void main(String[] args) {
 		System.out.println(remainingNumberOfSecondsByCurrentMinute());
 		System.out.println(remainingNumberOfSecondsByCurrentDay());
+		System.out.println(new Date().getTime());
 	}
 }

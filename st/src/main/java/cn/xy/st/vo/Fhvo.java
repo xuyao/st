@@ -1,7 +1,5 @@
 package cn.xy.st.vo;
 
-import cn.xy.st.util.NumberUtil;
-
 /**
  * 	抓取分红时候用的vo
  * */
