@@ -96,7 +96,6 @@ public class DayKlineMa20Service {
 			}
 			
 			lastdkline = dk.getC();
-			
 		}
 		
 		System.out.println(account.getBalance() + account.getAmount()*lastdkline + account.getLeft());
