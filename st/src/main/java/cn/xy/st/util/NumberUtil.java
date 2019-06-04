@@ -53,6 +53,10 @@ public class NumberUtil {
         return a2.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();  
     }
     
+    public static int amount(double a1, double b1) {
+        return (int)(a1/b1)/100;
+    }
+    
     
     public static int geScaretInt(int start, int scare){
       Random random = new Random();
@@ -69,7 +73,7 @@ public class NumberUtil {
     
     
     public static void main(String[] args){
-      System.out.println(geScaretDouble(1,9));
+      System.out.println(amount(10000,56));
     }
     
     
