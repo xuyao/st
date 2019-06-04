@@ -10,12 +10,12 @@ import cn.xy.st.util.NumberUtil;
 import cn.xy.st.vo.DayKline;
 
 /**
- * 	股票日线
+ * 	股票日线统计，复权后，股价小于当前收盘价的历史占比
  * @author xuyao
  *	day k line service
  */
 @Service
-public class DayKlineService {
+public class DKpricePropotionService {
 	
 	@Autowired
 	JRJModel jRJModel;
@@ -25,7 +25,7 @@ public class DayKlineService {
 	 */
 	public void run(){
 		
-		List<DayKline> list = jRJModel.getDayKline("000060");
+		List<DayKline> list = jRJModel.getDayKline("000060", true);
 		int count = list.size();
 		DayKline last = list.get(count-1);
 		int less = 0;//记录收盘价少于以往价格的数量

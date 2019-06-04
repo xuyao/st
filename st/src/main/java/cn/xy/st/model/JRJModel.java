@@ -33,7 +33,13 @@ public class JRJModel {
 	String dk_year = ConstsUtil.getValue("dk_year");
 	
 	//获得金融界日线信息
-	public List<DayKline> getDayKline(String code){
+	
+	/**
+	 * @param code 股票代码
+	 * @param isDivid 是否分红
+	 * @return
+	 */
+	public List<DayKline> getDayKline(String code, boolean isDivid){
 		List<DayKline> list = new ArrayList<DayKline>();
 		Map<String,Double> factor_map = new HashMap<String, Double>();
 		Date d = new Date();
@@ -42,17 +48,20 @@ public class JRJModel {
 		String json = httpService.get(url);
 		json = json.substring(json.indexOf("=")+1);
 		JSONObject jo = JSONObject.parseObject(json);
-		JSONArray factorArr = jo.getJSONArray("factor");
-		Iterator itFactor = factorArr.iterator();
-		while(itFactor.hasNext()){
-			JSONArray ja = (JSONArray)itFactor.next();
-//			ja.getDouble(1);//比例
-//			ja.getDouble(2);//折算后价格
-			if(dk_year.compareTo(ja.getString(0)) <= 0){
-				factor_map.put(ja.getString(0), ja.getDouble(1));
+		
+		if(isDivid){
+			JSONArray factorArr = jo.getJSONArray("factor");
+			Iterator itFactor = factorArr.iterator();
+			while(itFactor.hasNext()){
+				JSONArray ja = (JSONArray)itFactor.next();
+//				ja.getDouble(1);//比例
+//				ja.getDouble(2);//折算后价格
+				if(dk_year.compareTo(ja.getString(0)) <= 0){
+					factor_map.put(ja.getString(0), ja.getDouble(1));
+				}
 			}
 		}
-		
+
 		JSONArray ja = jo.getJSONArray("hqs");
 		Iterator it = ja.iterator();
 		//按照前复权计算
@@ -63,7 +72,7 @@ public class JRJModel {
 			if(dk_year.compareTo(stka.getString(0)) <= 0){
 				dk.setCode(code);
 				dk.setDate(stka.getString(0));//日期
-				if(factor_map.get(dk.getDate()) != null)
+				if(isDivid && factor_map.get(dk.getDate()) != null)
 					factor =  factor_map.get(dk.getDate()) * factor;
 				dk.setC(NumberUtil.doubleMul(stka.getDoubleValue(2), factor));//收盘
 				list.add(dk);
