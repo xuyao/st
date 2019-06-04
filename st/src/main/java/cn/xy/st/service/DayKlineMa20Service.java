@@ -19,7 +19,7 @@ import cn.xy.st.vo.DayKline;
  */
 
 @Service
-public class DKMa20Service {
+public class DayKlineMa20Service {
 	
 	@Autowired
 	JRJModel jRJModel;
@@ -37,14 +37,14 @@ public class DKMa20Service {
 	 */
 	public void run(){
 		List<DayKline> list = jRJModel.getDayKline("000060", false);
-		double ma20Total = 0;
 		for(DayKline dk : list){
 			queue.offer(dk.getC());//放入收盘价
 			if(queue.size()==ma){
+				double ma20Total = 0;
 				for(Double close : queue){
 					ma20Total = ma20Total+close;
-					System.out.println(dk.getDate() + " "+NumberUtil.doubleDiv(ma20Total, ma, 3));
 				}
+				System.out.println(dk.getDate() + " "+NumberUtil.doubleDiv(ma20Total, ma, 3));
 				queue.poll();//干掉第一个元素
 			}
 		}

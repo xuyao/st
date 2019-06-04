@@ -6,8 +6,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import cn.xy.st.service.AllStocksService;
-import cn.xy.st.service.DKMa20Service;
-import cn.xy.st.service.DKpricePropotionService;
+import cn.xy.st.service.DayKlineMa20Service;
+import cn.xy.st.service.DayKlinepricePropotionService;
 import cn.xy.st.service.DividendService;
 
 public class App {
@@ -28,13 +28,12 @@ public class App {
 			dividendService.caculatePriceDiv();
 	       break;
 	    case "3" ://day kline price statistic --3
-	    	DKpricePropotionService dKpricePropotionService = (DKpricePropotionService)context.getBean("dKpricePropotionService");
-	    	dKpricePropotionService.run();
+	    	DayKlinepricePropotionService dayKlinepricePropotionService = (DayKlinepricePropotionService)context.getBean("dayKlinepricePropotionService");
+	    	dayKlinepricePropotionService.run();
 	       break;
 	    case "4" ://day kline ma 20 --4
-//	    	DKMa20Service dKMa20Service = (DKMa20Service)context.getBean("dKMa20Service");
-	    	DKMa20Service dKMa20Service = new DKMa20Service();
-	    	dKMa20Service.run();
+	    	DayKlineMa20Service dayKlineMa20Service = (DayKlineMa20Service)context.getBean("dayKlineMa20Service");
+	    	dayKlineMa20Service.run();
 	       break;
 	    default : //可选
 	    	System.out.println("Noting!!!");

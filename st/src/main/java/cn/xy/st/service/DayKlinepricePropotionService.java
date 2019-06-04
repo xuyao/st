@@ -15,7 +15,7 @@ import cn.xy.st.vo.DayKline;
  *	day k line service
  */
 @Service
-public class DKpricePropotionService {
+public class DayKlinepricePropotionService {
 	
 	@Autowired
 	JRJModel jRJModel;
