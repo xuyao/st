@@ -13,7 +13,7 @@ import cn.xy.st.service.DividendService;
 public class App {
     public static void main( String[] args ) {
 		System.out.println("#########start!!!");
-		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContent.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContent.xml");
 		Scanner scanner = new Scanner(System.in);
 		String in = scanner.nextLine();
 
@@ -32,7 +32,8 @@ public class App {
 	    	dKpricePropotionService.run();
 	       break;
 	    case "4" ://day kline ma 20 --4
-	    	DKMa20Service dKMa20Service = (DKMa20Service)context.getBean("dKMa20Service");
+//	    	DKMa20Service dKMa20Service = (DKMa20Service)context.getBean("dKMa20Service");
+	    	DKMa20Service dKMa20Service = new DKMa20Service();
 	    	dKMa20Service.run();
 	       break;
 	    default : //可选

@@ -20,9 +20,6 @@ public class DKpricePropotionService {
 	@Autowired
 	JRJModel jRJModel;
 	
-	/**
-	 * 
-	 */
 	public void run(){
 		
 		List<DayKline> list = jRJModel.getDayKline("000060", true);
