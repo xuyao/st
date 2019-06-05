@@ -72,6 +72,11 @@ public class JRJModel {
 			if(dk_year.compareTo(stka.getString(0)) <= 0){
 				dk.setCode(code);
 				dk.setDate(stka.getString(0));//日期
+				dk.setLc(stka.getDoubleValue(1));//昨收
+				dk.setO(stka.getDoubleValue(3));//开盘
+				dk.setH(stka.getDoubleValue(4));
+				dk.setL(stka.getDoubleValue(5));
+				dk.setV(stka.getIntValue(6));
 				if(isDivid && factor_map.get(dk.getDate()) != null)
 					factor =  factor_map.get(dk.getDate()) * factor;
 				dk.setC(NumberUtil.doubleMul(stka.getDoubleValue(2), factor));//收盘
