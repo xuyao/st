@@ -13,19 +13,20 @@ import org.springframework.stereotype.Service;
 import cn.xy.st.service.HttpService;
 import cn.xy.st.util.ConstsUtil;
 import cn.xy.st.util.NumberUtil;
+import cn.xy.st.util.UUIDUtil;
 import cn.xy.st.vo.DayKline;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * 	jrj 金融界模型
+ * east money 东方财富模型
  * @author xuyao
  *	all stock list service
  */
 
 @Service
-public class JRJModel {
+public class EasyMoneyModel {
 
 	@Autowired
 	HttpService httpService;
@@ -33,8 +34,9 @@ public class JRJModel {
 	String dk_year = ConstsUtil.getValue("dk_year");
 	
 	//获得金融界日线信息
-	/*
-	 * [20070305,46.41,44.38,45.98,46.17,43.53,419196,1.880502808E9,false]
+	/*http://pdfm.eastmoney.com/EM_UBG_PDTI_Fast/api/js?token=4f1862fc3b5e77c150a2b985b12db0fd&rtntype=6&id=0000602&type=k&authorityType=fa&cb=jsonp1559728734182
+	 * 
+	 * "2019-06-05,4.76,4.72,4.81,4.71,192967,91827489,2.12%"
 	 *   日期             ,昨收       ,收盘       ,开盘       ,最高       ,最低       ,成交量      ,成交额
 	 * 
 	 * 
@@ -42,32 +44,22 @@ public class JRJModel {
 	
 	/**
 	 * @param code 股票代码
-	 * @param isDivid 是否分红
+	 * @param marketType 1-上证 ， 2-深证
 	 * @return
 	 */
-	public List<DayKline> getDayKline(String code, boolean isDivid){
+	public List<DayKline> getDayKline(String code , String marketType){
 		List<DayKline> list = new ArrayList<DayKline>();
 		Map<String,Double> factor_map = new HashMap<String, Double>();
 		Date d = new Date();
-		String url = "http://flashdata2.jrj.com.cn/history/js/share/" + code 
-				+ "/other/dayk_ex.js?random=" + d.getTime();
+		String url = "http://pdfm.eastmoney.com/EM_UBG_PDTI_Fast/api/js?"
+				+ "token="+UUIDUtil.genUUID()+"&rtntype=6&id=" + code + marketType
+				+"&type=k&authorityType=fa&cb=jsonp" + d.getTime();
+		
+		
 		String json = httpService.get(url);
 		json = json.substring(json.indexOf("=")+1);
 		JSONObject jo = JSONObject.parseObject(json);
 		
-		if(isDivid){
-			JSONArray factorArr = jo.getJSONArray("factor");
-			Iterator itFactor = factorArr.iterator();
-			while(itFactor.hasNext()){
-				JSONArray ja = (JSONArray)itFactor.next();
-//				ja.getDouble(1);//比例
-//				ja.getDouble(2);//折算后价格
-				if(dk_year.compareTo(ja.getString(0)) <= 0){
-					factor_map.put(ja.getString(0), ja.getDouble(1));
-				}
-			}
-		}
-
 		JSONArray ja = jo.getJSONArray("hqs");
 		Iterator it = ja.iterator();
 		//按照前复权计算
@@ -83,8 +75,6 @@ public class JRJModel {
 				dk.setH(stka.getDoubleValue(4));
 				dk.setL(stka.getDoubleValue(5));
 				dk.setV(stka.getIntValue(6));
-				if(isDivid && factor_map.get(dk.getDate()) != null)
-					factor =  factor_map.get(dk.getDate()) * factor;
 				dk.setC(NumberUtil.doubleMul(stka.getDoubleValue(2), factor));//收盘
 				list.add(dk);
 			}
