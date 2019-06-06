@@ -8,6 +8,10 @@ import java.net.URL;
 
 import org.springframework.stereotype.Service;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
 /**
  * @author xuyao
  *	http service tools
@@ -55,6 +59,20 @@ public class HttpService extends LogService{
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	
+	final WebClient webClient = new WebClient(BrowserVersion.CHROME);
+	public String htmlunit(String urlAll) {
+        HtmlPage page = null;
+        try {
+            page = webClient.getPage(urlAll);//尝试加载上面图片例子给出的网页
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            webClient.close();
+        }
+	   return  page.asText();
 	}
 	
 }

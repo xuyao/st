@@ -7,7 +7,9 @@ import java.util.Queue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.xy.st.model.EasyMoneyModel;
 import cn.xy.st.model.JRJModel;
+import cn.xy.st.model.SnowBallModel;
 import cn.xy.st.util.ConstsUtil;
 import cn.xy.st.util.NumberUtil;
 import cn.xy.st.vo.Account;
@@ -20,10 +22,14 @@ import cn.xy.st.vo.DayKline;
  */
 
 @Service
-public class DayKlineMa20Service {
+public class DayKlineMaService {
 	
 	@Autowired
 	JRJModel jRJModel;
+	@Autowired
+	EasyMoneyModel easyMoneyModel;
+	@Autowired
+	SnowBallModel snowBallModel;
 	
 	//ma20
 	Integer ma = 20;

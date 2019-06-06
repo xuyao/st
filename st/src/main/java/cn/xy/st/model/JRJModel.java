@@ -72,6 +72,7 @@ public class JRJModel {
 		Iterator it = ja.iterator();
 		//按照前复权计算
 		double factor = 1;
+		
 		while(it.hasNext()){
 			DayKline dk = new DayKline();
 			JSONArray stka = (JSONArray)it.next();
@@ -87,8 +88,10 @@ public class JRJModel {
 					factor =  factor_map.get(dk.getDate()) * factor;
 				dk.setC(NumberUtil.doubleMul(stka.getDoubleValue(2), factor));//收盘
 				list.add(dk);
+//				System.out.println(stka.getString(0)+ " " + dk.getC() + " " + dk.getLc());
 			}
 		}
+		
 		return list;
 	}
 }

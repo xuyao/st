@@ -26,7 +26,7 @@ import com.alibaba.fastjson.JSONObject;
  */
 
 @Service
-public class EasyMoneyModel {
+public class SnowBallModel {
 
 	@Autowired
 	HttpService httpService;
@@ -34,8 +34,8 @@ public class EasyMoneyModel {
 	String dk_year = ConstsUtil.getValue("dk_year");
 	
 	//获得金融界日线信息
-	/* 前复权：http://pdfm.eastmoney.com/EM_UBG_PDTI_Fast/api/js?token=4f1862fc3b5e77c150a2b985b12db0fd&rtntype=6&id=6013181&type=k&authorityType=fa&cb=jsonp1559728734182
-	 * 不复权：http://pdfm.eastmoney.com/EM_UBG_PDTI_Fast/api/js?token=4f1862fc3b5e77c150a2b985b12db0fd&rtntype=6&id=6013181&type=k&authorityType=&cb=jsonp1559802732908
+	/* 前复权：https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=SH600371&begin=1559892210785&period=day&type=before&count=-142&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance
+	 * 不复权：https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=SH600371&begin=1559892235863&period=day&type=normal&count=-142&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance
 	 * "2019-06-05,4.76,4.72,4.81,4.71,192967,91827489,2.12%"
 	 *   日期             ,昨收       ,收盘       ,开盘       ,最高       ,最低       ,成交量      ,成交额
 	 * 
@@ -44,7 +44,7 @@ public class EasyMoneyModel {
 	
 	/**
 	 * @param code 股票代码
-	 * @param marketType 1-上证 ， 2-深证
+	 * @param marketType SH-上证 ， SZ-深证
 	 * @return
 	 */
 	public List<DayKline> getDayKline(String code, String marketType, boolean ifreright){
@@ -53,17 +53,21 @@ public class EasyMoneyModel {
 		Date d = new Date();
 		String fa = "";
 		if(ifreright)//是否复权计算
-			fa = "fa";
-		String url = "http://pdfm.eastmoney.com/EM_UBG_PDTI_Fast/api/js?"
-				+ "token="+UUIDUtil.genUUID()+"&rtntype=6&id=" + code + marketType
-				+"&type=k&authorityType=" + fa+ "&cb=jsonp" + d.getTime();
+			fa = "before";
+		else
+			fa = "normal";
+//		String url = "http://pdfm.eastmoney.com/EM_UBG_PDTI_Fast/api/js?"
+//				+ "token="+UUIDUtil.genUUID()+"&rtntype=6&id=" + code + marketType
+//				+"&type=k&authorityType=" + fa+ "&cb=jsonp" + d.getTime();
+		String url = "https://stock.xueqiu.com/v5/stock/chart/kline.json?symbol=" + marketType + 
+				code + "&begin=" + d.getTime() + "&period=day&type=" + 
+				fa + "&count=-142&indicator=kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance";
 		
-		
-		String json = httpService.get(url);
-		json = json.substring(json.indexOf("(")+1, json.indexOf(")"));
+		String json = httpService.htmlunit(url);
+		System.out.println(json);
 		JSONObject jo = JSONObject.parseObject(json);
-		JSONArray ja = jo.getJSONArray("data");
-		Iterator it = ja.iterator();
+		JSONArray items = jo.getJSONArray("item");
+		Iterator it = items.iterator();
 		
 		double lc = 0;
 		while(it.hasNext()){
@@ -72,8 +76,8 @@ public class EasyMoneyModel {
 			if(dk_year.compareTo(stkaArr[0].replace("-", "")) <= 0){
 				DayKline dk = new DayKline();
 				dk.setCode(code);
-				dk.setO(Double.parseDouble(stkaArr[1]));
-				dk.setC(Double.parseDouble(stkaArr[2]));
+				dk.setO(Double.parseDouble(stkaArr[2]));
+				dk.setC(Double.parseDouble(stkaArr[5]));
 				dk.setH(Double.parseDouble(stkaArr[3]));
 				dk.setL(Double.parseDouble(stkaArr[4]));
 				dk.setLc(lc);
@@ -84,6 +88,12 @@ public class EasyMoneyModel {
 		}
 		
 		return list;
+	}
+	
+	public static void main(String[] args){
+		SnowBallModel sb = new SnowBallModel();
+		sb.httpService = new HttpService();
+		sb.getDayKline("601318", "SH" ,false);
 	}
 	
 }
