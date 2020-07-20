@@ -79,7 +79,7 @@ public class FundService {
 		List<String> list = new ArrayList<String>();
 		for(String[] ys : year){
 			List<NameValuePair> nameValuePairList = new ArrayList<NameValuePair>();
-			String url = "http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft=all&rs=&gs=0&sc=qjzf&st=desc&sd="+ys[0]+
+			String url = "http://fund.eastmoney.com/data/rankhandler.aspx?op=ph&dt=kf&ft="+ft+"&rs=&gs=0&sc=qjzf&st=desc&sd="+ys[0]+
 					"&ed="+ys[1]+"&qdii=&tabSubtype=,,,,,&pi=1&pn=2000&dx=1&v=0."+NumberUtil.getRandomNum(17);
 			try {
 				ArrayList<String> listfund = new ArrayList<String>();
