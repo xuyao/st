@@ -20,6 +20,43 @@ import org.apache.http.util.EntityUtils;
 public class HttpUtil {
 
 	private static final int SUCCESS_CODE = 200;
+	
+    public static String sendGetFundMon(String url, String bondfund, String host, String referer,List<NameValuePair> nameValuePairList) throws Exception{
+        CloseableHttpClient client = null;
+        CloseableHttpResponse response = null;
+        try{
+            client = HttpClients.createDefault();
+            URIBuilder uriBuilder = new URIBuilder(url);
+            uriBuilder.addParameters(nameValuePairList);
+            HttpGet httpGet = new HttpGet(uriBuilder.build());
+            httpGet.setHeader(new BasicHeader("Accept", "*/*"));
+            httpGet.setHeader(new BasicHeader("Accept-Encoding", "gzip, deflate, br"));
+            httpGet.setHeader(new BasicHeader("Accept-Language", "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7"));
+            httpGet.setHeader(new BasicHeader("Cookie", ConstsUtil.cookie2));
+            httpGet.setHeader(new BasicHeader("Host", host));
+            httpGet.setHeader(new BasicHeader("Connection", "keep-alive"));
+            httpGet.setHeader(new BasicHeader("Referer", referer));
+            httpGet.setHeader(new BasicHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36"));
+            response = client.execute(httpGet);
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            if (SUCCESS_CODE == statusCode){
+                HttpEntity entity = response.getEntity();
+                String result = EntityUtils.toString(entity,"UTF-8");
+                return result;
+            }else{
+                System.out.println("GET请求失败！"+statusCode);
+            }
+        }catch (Exception e){
+        	e.printStackTrace();
+        } finally {
+            response.close();
+            client.close();
+        }
+        return null;
+    }
+    
+    
     /**
      * 发送GET请求
      * @param url   请求url
@@ -50,7 +87,7 @@ public class HttpUtil {
                 String result = EntityUtils.toString(entity,"UTF-8");
                 return result;
             }else{
-                System.out.println("GET请求失败！");
+                System.out.println("GET请求失败！"+statusCode);
             }
         }catch (Exception e){
         	e.printStackTrace();
@@ -59,6 +96,7 @@ public class HttpUtil {
             client.close();
         }
         return null;
+    	
     }
 
     /**
