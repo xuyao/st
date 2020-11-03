@@ -29,29 +29,20 @@ public class FundMonService {
 	
 	HttpUtil http = new HttpUtil();
 	String bondfunds = ConstsUtil.getValue("bondfunds");
-	String filePath = ConstsUtil.getValue("filepath");
-			
+	
 	public void run(){
 		System.out.println("开始运行！");
 		String[] bondfundsList = bondfunds.split(",");
 		
-		StringBuilder sb = new StringBuilder();
 		for(String bondfund : bondfundsList){
 			Integer times = bondfunds(bondfund);
 			String pzs = panzhong(bondfund);
 			String[] ar = pzs.split(",");
 			if(ar[1].startsWith("-")){
 				if(times>=2){
-					sb.append(ar[0] + "连续跌"+times+"天，盘中估计为"+ar[1]+"， 建议加仓！").append("\n");
-//					System.out.println(ar[0] + "连续跌"+times+"天，且今天盘中估计为"+ar[1]+"， 建议加仓！");
+					System.out.println(ar[0] + "连续跌"+times+"天，且今天盘中估计为"+ar[1]+"， 建议加仓！");
 				}
 			}
-		}
-		
-		try {
-			FileUtils.writeStringToFile(new File(filePath), sb.toString(),"gbk");
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 	
