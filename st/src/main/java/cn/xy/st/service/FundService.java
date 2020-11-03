@@ -24,7 +24,7 @@ public class FundService {
 	String ft = ConstsUtil.getValue("ft");
 	String num = ConstsUtil.getValue("num");
 //	String[] args={"zzf","1yzf","3yzf","6yzf","1nzf","2nzf","3nzf","jnzf","lszf"};
-	String[] args={"1yzf","3yzf","6yzf","1nzf","2nzf","3nzf","jnzf"};
+	String[] args={"zzf","1yzf","3yzf","6yzf","1nzf","2nzf","3nzf","jnzf"};
 	
 	String[][] year={{"2019-01-01","2020-01-01"},{"2018-01-01","2019-01-01"},{"2017-01-01","2018-01-01"},{"2016-01-01","2017-01-01"}};
 //	String[][] year={{"2019-01-01","2020-01-01"},{"2018-01-01","2019-01-01"},{"2017-01-01","2018-01-01"},{"2016-01-01","2017-01-01"},{"2015-01-01","2016-01-01"}
