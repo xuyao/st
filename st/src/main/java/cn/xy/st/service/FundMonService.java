@@ -3,6 +3,7 @@ package cn.xy.st.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
@@ -14,7 +15,9 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import cn.xy.st.util.ConstsUtil;
+import cn.xy.st.util.DateUtil;
 import cn.xy.st.util.HttpUtil;
+import cn.xy.st.util.MailSenderUtil;
 import cn.xy.st.util.NumberUtil;
 
 import com.alibaba.fastjson.JSONArray;
@@ -29,21 +32,31 @@ public class FundMonService {
 	
 	HttpUtil http = new HttpUtil();
 	String bondfunds = ConstsUtil.getValue("bondfunds");
-	
+	String filePath = ConstsUtil.getValue("filepath");
+	  
 	public void run(){
-		System.out.println("开始运行！");
-		String[] bondfundsList = bondfunds.split(",");
-		
-		for(String bondfund : bondfundsList){
-			Integer times = bondfunds(bondfund);
-			String pzs = panzhong(bondfund);
-			String[] ar = pzs.split(",");
-			if(ar[1].startsWith("-")){
-				if(times>=2){
-					System.out.println(ar[0] + "连续跌"+times+"天，且今天盘中估计为"+ar[1]+"， 建议加仓！");
-				}
-			}
-		}
+	    System.out.println("开始运行！");
+	    String[] bondfundsList = this.bondfunds.split(",");
+
+	    StringBuilder sb = new StringBuilder("运行结果如下：").append("\n");
+	    for (String bondfund : bondfundsList) {
+	      Integer times = Integer.valueOf(bondfunds(bondfund));
+	      String pzs = panzhong(bondfund);
+	      String[] ar = pzs.split(",");
+	      if ((!ar[1].startsWith("-")) || 
+	        (times.intValue() < 2)) continue;
+	      sb.append(ar[0] + "连续跌" + times + "天，盘中估计为" + ar[1] + "， 建议加仓！").append("\n");
+	    }
+
+	    try
+	    {
+	      FileUtils.writeStringToFile(new File(this.filePath), sb.toString(), "gbk");
+	    } catch (IOException e) {
+	      e.printStackTrace();
+	    }
+	    
+	    new MailSenderUtil().sendMail(DateUtil.formatNYR(new Date())+"今日基金盘面",
+	    		sb.toString());
 	}
 	
 	
