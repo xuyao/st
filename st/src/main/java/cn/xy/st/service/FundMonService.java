@@ -24,6 +24,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
+ * 持有基金涨跌的监控，做好的话需要研究量化交易算法
  * @author xuyao
  *	fund monitor 
  */

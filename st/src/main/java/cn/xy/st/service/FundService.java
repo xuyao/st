@@ -14,6 +14,7 @@ import cn.xy.st.util.NumberUtil;
 import cn.xy.st.util.StrUtils;
 
 /**
+ * 基于基金的统计
  * @author xuyao
  *	share fund
  */
@@ -24,11 +25,13 @@ public class FundService {
 	String ft = ConstsUtil.getValue("ft");
 	String num = ConstsUtil.getValue("num");
 //	String[] args={"zzf","1yzf","3yzf","6yzf","1nzf","2nzf","3nzf","jnzf","lszf"};
-	String[] args={"zzf","1yzf","3yzf","6yzf","1nzf","2nzf","3nzf","jnzf"};
+	String[] args={"1yzf","3yzf","6yzf","1nzf","2nzf","3nzf","jnzf"};
 	
-	String[][] year={{"2019-01-01","2020-01-01"},{"2018-01-01","2019-01-01"},{"2017-01-01","2018-01-01"},{"2016-01-01","2017-01-01"}};
+	String[][] year={{"2019-01-01","2020-01-01"},{"2018-01-01","2019-01-01"},{"2017-01-01","2018-01-01"}};
 //	String[][] year={{"2019-01-01","2020-01-01"},{"2018-01-01","2019-01-01"},{"2017-01-01","2018-01-01"},{"2016-01-01","2017-01-01"},{"2015-01-01","2016-01-01"}
 //	,{"2014-01-01","2015-01-01"},{"2013-01-01","2014-01-01"}};
+	
+	List<String> fundlist = null;
 	
 	public void run(){
 		List<String> list1 = guding();
@@ -36,7 +39,8 @@ public class FundService {
 		list1.retainAll(list2);
 		
 		System.out.println("==================分析基金如下");
-		for(String s : list1){
+		fundlist = list1;
+		for(String s : fundlist){
 			System.out.println(s);
 		}
 	}
@@ -115,6 +119,10 @@ public class FundService {
 			}
 		}
 		return list;
+	}
+
+	public List<String> getFundlist() {
+		return fundlist;
 	}
 
 }
