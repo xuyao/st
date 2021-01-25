@@ -18,7 +18,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * 基金经理
+ * 基金经理筛查
  * @author xuyao
  *	fund manager filter 
  */

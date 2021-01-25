@@ -1,6 +1,7 @@
 package cn.xy.st.util;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -37,7 +38,22 @@ public class DateUtil {
 	}
 	
 	
+	public static String formatNYR(Date date, int yearnum) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(1, yearnum);
+		Date date2 = calendar.getTime();
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat(STR_DATE_PATTERN);
+			sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+			return sdf.format(date2);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	
 	public static void main(String[] args) {
-		System.out.println(new Date().getTime());
+		System.out.println(formatNYR(new Date(), -2));
 	}
 }
